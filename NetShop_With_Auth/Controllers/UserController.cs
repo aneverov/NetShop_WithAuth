@@ -22,35 +22,47 @@ namespace NetShop_With_Auth.Controllers
         [HttpGet]
         public async Task<IActionResult> ViewProfile()  
         {
-            IdentityUser user = await Context.Users.FirstOrDefaultAsync(u => u.Email == User.Identity.Name);
-            UserViewModel model = new UserViewModel
-            {
-                Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
-                UserName = user.UserName
-            };
+            //User user = ;
+            
 
-            return View(model);
+            return View(await Context.Users.FirstOrDefaultAsync(u => u.Email == User.Identity.Name));
 
 
         }
 
 
+        [HttpGet]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditProfile(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            User user = await Context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+        }
+
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditProfile(IdentityUser user)
+        public async Task<IActionResult> EditProfile(User user)
         {
-            IdentityUser userToUpdate = await Context.Users.FirstOrDefaultAsync(u => u.Email == user.Email);
-            user = userToUpdate;
-            //userToUpdate = Context.Users.Update(user);
-            //UserViewModel model = new UserViewModel
-            //{
-            //    Email = user.Email,
-            //    PhoneNumber = user.PhoneNumber,
-            //    UserName = user.UserName
-            //};
+            User TempUser = new User
+            {
 
-            return RedirectToAction("ViewProfile");
+                NormalizedEmail = user.Email.ToUpper(),
+                NormalizedUserName = user.UserName.ToUpper(),
+
+            };
+            user.NormalizedEmail = TempUser.NormalizedEmail;
+            user.NormalizedUserName = TempUser.NormalizedUserName;
+            Context.Update(user);
+            await Context.SaveChangesAsync();
+            return View(user);
         }
     }
 }

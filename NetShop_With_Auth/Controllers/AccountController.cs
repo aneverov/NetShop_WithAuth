@@ -12,10 +12,10 @@ namespace NetShop_With_Auth.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
 
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -30,7 +30,7 @@ namespace NetShop_With_Auth.Controllers
         {
             if (ModelState.IsValid)
             {
-                IdentityUser user = new IdentityUser
+                User user = new User
                 {
                     Email = model.Email,
                     UserName = model.Email
@@ -64,7 +64,7 @@ namespace NetShop_With_Auth.Controllers
         {
             if (ModelState.IsValid)
             {
-                IdentityUser user = await _userManager.FindByEmailAsync(model.Email);
+                User user = await _userManager.FindByEmailAsync(model.Email);
                 Microsoft.AspNetCore.Identity.SignInResult result =
                     await _signInManager.PasswordSignInAsync(user,
                         model.Password, model.RememberMe, false);

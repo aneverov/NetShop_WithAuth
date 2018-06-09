@@ -11,8 +11,8 @@ using System;
 namespace NetShop_With_Auth.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180609072710_initial")]
-    partial class initial
+    [Migration("20180609174032_ModUserId")]
+    partial class ModUserId
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -129,6 +129,111 @@ namespace NetShop_With_Auth.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("NetShop_With_Auth.Models.Basket", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Baskets");
+                });
+
+            modelBuilder.Entity("NetShop_With_Auth.Models.BasketToPhone", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("BasketId");
+
+                    b.Property<int>("PhoneId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BasketId");
+
+                    b.HasIndex("PhoneId");
+
+                    b.ToTable("BasketToPhones");
+                });
+
+            modelBuilder.Entity("NetShop_With_Auth.Models.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CommentDate");
+
+                    b.Property<int>("PhoneId");
+
+                    b.Property<string>("Text")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PhoneId");
+
+                    b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("NetShop_With_Auth.Models.Company", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Companies");
+                });
+
+            modelBuilder.Entity("NetShop_With_Auth.Models.Order", b =>
+                {
+                    b.Property<int>("OrderId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Address");
+
+                    b.Property<string>("ContactPhone");
+
+                    b.Property<int>("PhoneId");
+
+                    b.Property<string>("User");
+
+                    b.HasKey("OrderId");
+
+                    b.HasIndex("PhoneId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("NetShop_With_Auth.Models.Phone", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("CompanyId");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<int>("Price");
+
+                    b.Property<int>("Quantity");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.ToTable("Phones");
+                });
+
             modelBuilder.Entity("NetShop_With_Auth.Models.User", b =>
                 {
                     b.Property<string>("Id")
@@ -138,8 +243,6 @@ namespace NetShop_With_Auth.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
-
-                    b.Property<DateTime>("DateOfBirth");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256);
@@ -224,6 +327,50 @@ namespace NetShop_With_Auth.Migrations
                     b.HasOne("NetShop_With_Auth.Models.User")
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("NetShop_With_Auth.Models.Basket", b =>
+                {
+                    b.HasOne("NetShop_With_Auth.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("NetShop_With_Auth.Models.BasketToPhone", b =>
+                {
+                    b.HasOne("NetShop_With_Auth.Models.Basket", "Basket")
+                        .WithMany("BasketToPhones")
+                        .HasForeignKey("BasketId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("NetShop_With_Auth.Models.Phone", "Phone")
+                        .WithMany("BasketToPhones")
+                        .HasForeignKey("PhoneId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("NetShop_With_Auth.Models.Comment", b =>
+                {
+                    b.HasOne("NetShop_With_Auth.Models.Phone", "Phone")
+                        .WithMany("Comments")
+                        .HasForeignKey("PhoneId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("NetShop_With_Auth.Models.Order", b =>
+                {
+                    b.HasOne("NetShop_With_Auth.Models.Phone", "Phone")
+                        .WithMany()
+                        .HasForeignKey("PhoneId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("NetShop_With_Auth.Models.Phone", b =>
+                {
+                    b.HasOne("NetShop_With_Auth.Models.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

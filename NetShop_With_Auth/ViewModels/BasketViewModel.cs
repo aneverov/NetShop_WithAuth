@@ -9,8 +9,8 @@ namespace NetShop.ViewModels
 {
     public class BasketViewModel
     {
-        public int UserId { get; set; }
-        public IdentityUser User { get; set; }
+        public string UserId { get; set; }
+        public User User { get; set; }
 
         public List<BasketToPhone> BasketToPhones { get; set; }
 

@@ -8,7 +8,15 @@
 }
 
 <h2>Details</h2>
-@if (User.IsInRole("user"))
+<div>
+    <form asp-action="Basket">
+        <div class="form-group">
+            <input type="hidden" name="id" value="@Model.Phone.Id" />
+            <input type="submit" value="Дoбавить в корзину" />
+        </div>
+    </form>
+</div>
+@*@if (User.IsInRole("user"))
 {
     <div>
         <form asp-action="Basket">
@@ -19,7 +27,7 @@
         </form>
     </div>
     
-}
+}*@
 
 <div>
     <h4>Phone</h4>
