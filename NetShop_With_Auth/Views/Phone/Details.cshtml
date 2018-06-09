@@ -1,0 +1,67 @@
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@using NetShop.ViewModels
+@model NetShop.ViewModels.PhoneDetailsViewModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+@if (User.IsInRole("user"))
+{
+    <div>
+        <form asp-action="Basket">
+            <div class="form-group">
+                <input type="hidden" name="id" value="@Model.Phone.Id" />
+                <input type="submit" value="Дoбавить в корзину" />
+            </div>
+        </form>
+    </div>
+    
+}
+
+<div>
+    <h4>Phone</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Phone.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Phone.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Phone.Company.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Phone.Company.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Phone.Price)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Phone.Price)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Phone.Quantity)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Phone.Quantity)
+        </dd>
+    </dl>
+</div>
+<div>
+    <form asp-action="Buy">
+        <div class="form-group">
+            <label class="control-label">Количество</label>
+            <input type="hidden" name="id" value="@Model.Phone.Id" />
+            <input name="quantity" class="form-control" />
+            <input type="submit" value="Заказать" />
+        </div>
+    </form>|
+    @{
+        Html.RenderPartial("PhoneComments", Model.CommentsViewModel);
+    }
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -1,0 +1,17 @@
+﻿@model Comment
+<form asp-action="Comment" asp-controller="Phone">
+    <div class="form-group">
+        <div class="form-group">
+            <input asp-for="PhoneId" type="hidden" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Text" class="control-label"></label>
+            <input asp-for="Text" class="form-control" />
+            <span asp-validation-for="Text" class="text-danger"></span>
+        </div>
+        <input type="submit" value="Отправить"/>
+    </div>
+</form>|
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@

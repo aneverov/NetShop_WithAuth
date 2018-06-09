@@ -1,0 +1,34 @@
+﻿@model NetShop.ViewModels.BasketViewModel
+
+@{
+    ViewData["Title"] = "Basket";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Корзина</h2>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.User.Name)
+            </th>
+            <th>
+                @Html.DisplayFor(model => model.User.Name)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.BasketToPhones) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Удалить", "DeletefromBasket", new { id=item.Phone.Id })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

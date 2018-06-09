@@ -1,0 +1,29 @@
+﻿@using NetShop.ViewModels
+@model NetShop.ViewModels.CommentsViewModel
+@if (!Model.Comments.Any())
+{
+    <text>Комментариев пока нет</text>
+}
+else
+{
+<dl class="dl-horizontal">
+    @foreach (Comment comment in Model.Comments)
+    {
+        <dt>
+            @comment.CommentDate.ToString("F")
+        </dt>
+        <dd>
+            @comment.Text
+        </dd>
+        <form asp-controller="Phone" asp-action="DeleteComment" method="post">
+            <input type="hidden" name="id" value="@comment.Id"/>
+            <input type="hidden" name="phoneId" value="@comment.PhoneId"/>
+            <input type="submit" value="Удалить" class="buttonLikeLink"/>
+        </form>
+    }
+</dl>
+}
+
+@{
+    Html.RenderPartial("CreateComment", Model.NewComment);
+}

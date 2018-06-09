@@ -1,0 +1,111 @@
+﻿@model NetShop.ViewModels.IndexViewModel
+@{
+    ViewData["Title"] = "Телефоны";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Телефоны</h2>
+@if (User.IsInRole("admin"))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
+
+
+<form method="get">
+    <div class="form-inline form-group">
+        <label class="control-label">Имя: </label>
+        @Html.TextBox("name", Model.Name, htmlAttributes: new { @class = "form-control" })
+
+        <label class="control-label">Компания: </label>
+        @Html.DropDownList("company", Model.Companies as SelectList,
+                  htmlAttributes: new { @class = "form-control" })
+
+        <label class="control-label">Цена от: </label>
+        @Html.TextBox("priceFrom", Model.PriceFrom, htmlAttributes: new { @class = "form-control" })
+
+        <label class="control-label">Цена до: </label>
+        @Html.TextBox("priceTo", Model.PriceTo, htmlAttributes: new { @class = "form-control" })
+
+        <label class="control-label">Есть в наличии: </label>
+        @Html.CheckBox("exist", true);
+
+        <input type="submit" value="Фильтр" class="btn btn-default" />
+    </div>
+</form>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewBag.CompSort">
+                    Производитель
+                </a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewBag.NameSort">
+                    Модель
+                </a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewBag.PriceSort">
+                    Цена
+                </a>
+            </th>
+            <th>
+                Количество
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Phones)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Company.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.ActionLink("Просмотреть", "Details", new { id = item.Id })
+                    @if (User.IsInRole("admin"))
+                    {
+                        @Html.ActionLink("Редактировать", "Edit", new { id = item.Id })
+                        @Html.ActionLink("Удалить", "Delete", new { id = item.Id })
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@if (Model.PageViewModel.HasPreviousPage)
+{
+    <a asp-action="Index"
+       asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+       asp-route-category="@(Model.Phones)"
+       class="btn btn-default btn">
+        <i class="glyphicon glyphicon-chevron-left"></i>
+        Назад
+    </a>
+}
+
+@if (Model.PageViewModel.HasNextPage)
+{
+    <a asp-action="Index"
+       asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+       asp-route-category="@(Model.Phones)"
+       class="btn btn-default btn">
+        Вперед
+        <i class="glyphicon glyphicon-chevron-right"></i>
+    </a>
+}
