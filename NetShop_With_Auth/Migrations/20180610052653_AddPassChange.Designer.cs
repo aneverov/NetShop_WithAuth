@@ -11,9 +11,10 @@ using System;
 namespace NetShop_With_Auth.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180610052653_AddPassChange")]
+    partial class AddPassChange
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -256,11 +257,15 @@ namespace NetShop_With_Auth.Migrations
 
                     b.Property<string>("Name");
 
+                    b.Property<string>("NewPassword");
+
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256);
 
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256);
+
+                    b.Property<string>("OldPassword");
 
                     b.Property<string>("PasswordHash");
 
@@ -286,41 +291,6 @@ namespace NetShop_With_Auth.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("NetShop_With_Auth.ViewModels.ChangePasswordModel", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("OldPassword")
-                        .IsRequired();
-
-                    b.Property<string>("Password")
-                        .IsRequired();
-
-                    b.Property<string>("PasswordConfirm")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ChangePasswordModel");
-                });
-
-            modelBuilder.Entity("NetShop_With_Auth.ViewModels.UserViewModel", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("IsBlocked");
-
-                    b.Property<string>("Name");
-
-                    b.Property<string>("PhoneNumber");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserViewModel");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

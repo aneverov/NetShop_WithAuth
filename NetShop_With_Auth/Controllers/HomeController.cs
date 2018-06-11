@@ -12,7 +12,7 @@ namespace NetShop_With_Auth.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "Phone");
         }
 
 

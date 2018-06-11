@@ -5,6 +5,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20180609175803_ModUserIdInBVM.cs" />
+    <Compile Remove="Migrations\20180609175803_ModUserIdInBVM.Designer.cs" />
+    <Compile Remove="Migrations\20180610041147_AddNameFieldToUser.cs" />
+    <Compile Remove="Migrations\20180610041147_AddNameFieldToUser.Designer.cs" />
+    <Compile Remove="Migrations\20180610041240_AddNameFieldToUser.cs" />
+    <Compile Remove="Migrations\20180610041240_AddNameFieldToUser.Designer.cs" />
+    <Compile Remove="Migrations\20180610041521_AddNameFieldToUser.cs" />
+    <Compile Remove="Migrations\20180610041521_AddNameFieldToUser.Designer.cs" />
+    <Compile Remove="Migrations\20180610041643_AddNameFieldToUser.cs" />
+    <Compile Remove="Migrations\20180610041643_AddNameFieldToUser.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.2" />
   </ItemGroup>

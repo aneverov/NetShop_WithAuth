@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using NetShop_With_Auth.Models;
+using NetShop_With_Auth.ViewModels;
 
 namespace NetShop_With_Auth.Models
 {
-    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
+    public class ApplicationDbContext : IdentityDbContext<User>
     {
         public DbSet<Phone> Phones { get; set; }
         public DbSet<Order> Orders { get; set; }
@@ -21,5 +23,11 @@ namespace NetShop_With_Auth.Models
         {
 
         }
+
+        public DbSet<NetShop_With_Auth.Models.User> User { get; set; }
+
+        public DbSet<NetShop_With_Auth.ViewModels.UserViewModel> UserViewModel { get; set; }
+
+        public DbSet<NetShop_With_Auth.ViewModels.ChangePasswordModel> ChangePasswordModel { get; set; }
     }
 }

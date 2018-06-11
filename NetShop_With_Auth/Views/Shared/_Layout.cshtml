@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> SignInManager
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -34,12 +37,12 @@
 
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li><a asp-area="" asp-controller="User" asp-action="EditProfile">@User.Identity.Name</a></li>
-                        <li><a asp-area="" asp-controller="Account" asp-action="LogOff">LogOff</a></li>
-                        if (User.IsInRole("user"))
+                        <li><a asp-area="" asp-controller="User" asp-action="ViewProfile">@User.Identity.Name</a></li>
+                        <li><a asp-area="" asp-controller="Account" asp-action="LogOff">LogOff </a> </li>
+                        if (User.IsInRole("admin"))
                         {
-                                <li><a asp-area="" asp-controller="Phone" asp-action="Basket">Корзина</a></li>
-                            }
+                            <li><a asp-area="" asp-controller="User" asp-action="UsersModify">Администрирование</a></li>
+                        }
                     }
                     else
                     {

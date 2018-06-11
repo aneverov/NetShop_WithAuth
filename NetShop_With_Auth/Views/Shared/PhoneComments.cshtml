@@ -6,22 +6,26 @@
 }
 else
 {
-<dl class="dl-horizontal">
-    @foreach (Comment comment in Model.Comments)
-    {
-        <dt>
-            @comment.CommentDate.ToString("F")
-        </dt>
-        <dd>
-            @comment.Text
-        </dd>
-        <form asp-controller="Phone" asp-action="DeleteComment" method="post">
-            <input type="hidden" name="id" value="@comment.Id"/>
-            <input type="hidden" name="phoneId" value="@comment.PhoneId"/>
-            <input type="submit" value="Удалить" class="buttonLikeLink"/>
-        </form>
-    }
-</dl>
+    <dl class="dl-horizontal">
+        <h5>Комментарии</h5>
+        @foreach (Comment comment in Model.Comments)
+        {
+            <dt>
+                @comment.CommentDate.ToString("F")
+            </dt>
+            <dd>
+                @comment.Text
+            </dd>
+            if (@User.IsInRole("admin"))
+            {
+                <form asp-controller="Phone" asp-action="DeleteComment" method="post">
+                    <input type="hidden" name="id" value="@comment.Id"/>
+                    <input type="hidden" name="phoneId" value="@comment.PhoneId"/>
+                    <input type="submit" value="Удалить" class="buttonLikeLink"/>
+                </form>
+            }
+        }
+    </dl>
 }
 
 @{

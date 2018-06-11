@@ -105,6 +105,7 @@ namespace NetShop_With_Auth.Controllers
         }
 
         [Authorize(Roles = "admin")]
+        [HttpGet]
         public IActionResult Create()
         {
             List<Company> companies = context.Companies.ToList();
@@ -159,7 +160,7 @@ namespace NetShop_With_Auth.Controllers
         }
 
         [Authorize(Roles = "admin")]
-
+        [HttpGet]
         public IActionResult Edit(int id)
         {
             Phone phone = context.Phones.FirstOrDefault(p => p.Id == id);
@@ -188,7 +189,6 @@ namespace NetShop_With_Auth.Controllers
         }
 
         [Authorize(Roles = "admin")]
-
         [HttpPost]
         public IActionResult Delete(Phone phone)
         {
@@ -200,6 +200,7 @@ namespace NetShop_With_Auth.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public IActionResult DeleteComment(int id, int phoneId)
         {
             Comment comment = context.Comments.FirstOrDefault(c => c.Id == id);
@@ -209,10 +210,10 @@ namespace NetShop_With_Auth.Controllers
             return RedirectToAction("Details", "Phone", new { id = phoneId });
         }
 
-        //[Authorize(Roles = "user")]
+        ////[Authorize(Roles = "user")]
         //public IActionResult Basket()
         //{
-        //    IdentityUser user = context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
+        //    User user = context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
         //    Basket basket = context.Baskets.FirstOrDefault(p => p.UserId == user.Id);
 
         //    List<BasketToPhone> list = context.BasketToPhones.Where(b => b.BasketId == basket.Id).Include(p => p.Phone).ToList();
@@ -222,51 +223,48 @@ namespace NetShop_With_Auth.Controllers
         //    return View(model);
         //}
 
-        //[Authorize(Roles = "user")]
-        //[HttpPost]
-        //public IActionResult Basket(int id)
-        //{
-        //    IdentityUser user = context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
-        //    Basket basket = context.Baskets.FirstOrDefault(p => p.UserId == user.Id);
-        //    if (basket == null)
-        //    {
-        //        basket = new Basket() { UserId = user.Id };
-        //        context.Baskets.Add(basket);
-        //    }
-        //    BasketToPhone mod = new BasketToPhone
-        //    {
-        //        PhoneId = id,
-        //        BasketId = basket.Id
-        //    };
-        //    context.BasketToPhones.Add(mod);
-        //    List<BasketToPhone> list = context.BasketToPhones.Where(b => b.BasketId == basket.Id).Include(p => p.Phone).ToList();
+        [Authorize(Roles = "user")]
+        [HttpPost]
+        public IActionResult Basket(int id)
+        {
+            User user = context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
+            Basket basket = context.Baskets.FirstOrDefault(p => p.UserId == user.Id);
+            if (basket == null)
+            {
+                basket = new Basket() { UserId = user.Id };
+                context.Baskets.Add(basket);
+            }
+            BasketToPhone mod = new BasketToPhone
+            {
+                PhoneId = id,
+                BasketId = basket.Id
+            };
+            context.BasketToPhones.Add(mod);
+            context.SaveChanges();
+            List<BasketToPhone> list = context.BasketToPhones.Where(b => b.BasketId == basket.Id).Include(p => p.Phone).ToList();
 
-        //    list.Add(mod);
+            BasketViewModel model = new BasketViewModel { User = user, BasketToPhones = list };
 
-        //    BasketViewModel model = new BasketViewModel { User = user, BasketToPhones = list };
+            return View(model);
+        }
 
-        //    context.SaveChanges();
+        [Authorize(Roles = "user")]
+        public IActionResult DeletefromBasket(int id)
+        {
+            User user = context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
+            Basket basket = context.Baskets.FirstOrDefault(p => p.UserId == user.Id);
 
-        //    return View(model);
-        //}
+            BasketToPhone mod = context.BasketToPhones.Where(bp => bp.BasketId == basket.Id).FirstOrDefault(bp => bp.PhoneId == id);
 
-        //[Authorize(Roles = "user")]
-        //public IActionResult DeletefromBasket(int id)
-        //{
-        //    IdentityUser user = context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
-        //    Basket basket = context.Baskets.FirstOrDefault(p => p.UserId == user.Id);
+            context.BasketToPhones.Remove(mod);
+            context.SaveChanges();
 
-        //    BasketToPhone mod = context.BasketToPhones.Where(bp => bp.BasketId == basket.Id).FirstOrDefault(bp => bp.PhoneId == id);
+            List<BasketToPhone> list = context.BasketToPhones.Where(b => b.BasketId == basket.Id).Include(p => p.Phone).ToList();
 
-        //    context.BasketToPhones.Remove(mod);
-        //    context.SaveChanges();
+            BasketViewModel model = new BasketViewModel { User = user, BasketToPhones = list };
 
-        //    List<BasketToPhone> list = context.BasketToPhones.Where(b => b.BasketId == basket.Id).Include(p => p.Phone).ToList();
-
-        //    BasketViewModel model = new BasketViewModel { User = user, BasketToPhones = list };
-
-        //    return View(model);
-        //}
+            return View(model);
+        }
 
         [AcceptVerbs("Get", "Post")]
         public IActionResult CheckName(string name, int companyId)
