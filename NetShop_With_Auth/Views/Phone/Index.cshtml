@@ -5,15 +5,15 @@
 }
 
 <h2>Телефоны</h2>
-<p>
+@*<p>
     <a asp-action="Create">Create New</a>
-</p>
-@*@if (User.IsInRole("admin"))
+</p>*@
+@if (User.IsInRole("admin"))
 {
     <p>
         <a asp-action="Create">Create New</a>
     </p>
-}*@
+}
 
 
 <form method="get">

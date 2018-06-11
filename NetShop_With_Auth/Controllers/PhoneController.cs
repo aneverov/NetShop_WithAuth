@@ -105,6 +105,7 @@ namespace NetShop_With_Auth.Controllers
         }
 
         [Authorize(Roles = "admin")]
+        [HttpGet]
         public IActionResult Create()
         {
             List<Company> companies = context.Companies.ToList();
@@ -159,7 +160,7 @@ namespace NetShop_With_Auth.Controllers
         }
 
         [Authorize(Roles = "admin")]
-
+        [HttpGet]
         public IActionResult Edit(int id)
         {
             Phone phone = context.Phones.FirstOrDefault(p => p.Id == id);
@@ -188,7 +189,6 @@ namespace NetShop_With_Auth.Controllers
         }
 
         [Authorize(Roles = "admin")]
-
         [HttpPost]
         public IActionResult Delete(Phone phone)
         {
@@ -200,6 +200,7 @@ namespace NetShop_With_Auth.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public IActionResult DeleteComment(int id, int phoneId)
         {
             Comment comment = context.Comments.FirstOrDefault(c => c.Id == id);
@@ -222,7 +223,7 @@ namespace NetShop_With_Auth.Controllers
         //    return View(model);
         //}
 
-        //[Authorize(Roles = "user")]
+        [Authorize(Roles = "user")]
         [HttpPost]
         public IActionResult Basket(int id)
         {
@@ -247,7 +248,7 @@ namespace NetShop_With_Auth.Controllers
             return View(model);
         }
 
-        //[Authorize(Roles = "user")]
+        [Authorize(Roles = "user")]
         public IActionResult DeletefromBasket(int id)
         {
             User user = context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);

@@ -6,29 +6,24 @@ using System.Threading.Tasks;
 
 namespace NetShop_With_Auth.ViewModels
 {
-    public class RegisterViewModel
+    public class ChangePasswordModel
     {
-        [Required]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
-
-        [Display(Name = "Имя")]
-        [MaxLength(15)]
-        public string Name { get; set; }
-
-        [Required]
-        [Display(Name = "Дата рождения")]
-        public DateTime DateOfBirth { get; set; }
+        public string Id { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Пароль")]
+        [Display(Name = "Введите старый пароль")]
+        public string OldPassword { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        [Display(Name = "Введите новый пароль")]
         public string Password { get; set; }
 
         [Required]
         [Compare("Password", ErrorMessage = "Пароли не совпадают")]
         [DataType(DataType.Password)]
         [Display(Name = "Подтвердить пароль")]
-        public string PasswordConfirm { get; set; }   
+        public string PasswordConfirm { get; set; }
     }
 }

@@ -1,0 +1,29 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using NetShop_With_Auth.ViewModels
+@model NetShop_With_Auth.ViewModels.ChangeUserRoleModel
+
+
+@{
+    ViewData["Title"] = "EditUserRole";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Изменение ролей для пользователя @Model.UserEmail</h2>
+
+<form asp-action="EditUserRole" method="post">
+    <input type="hidden" name="userId" value="@Model.UserId" />
+    <div class="form-group">
+        @foreach (IdentityRole role in Model.AllRoles)
+        {
+            <input type="checkbox" name="roles" value="@role.Name"
+                   @(Model.UserRoles.Contains(role.Name) ? "checked=\"checked\"" : "") />@role.Name <br />
+        }
+    </div>
+    <div>
+        <input type="checkbox" name="isBlocked" value="true" />Поставьте галочку чтобы заблокировать пользователя <br />
+        @*<input checked="" id="Visible" name="isBlocked" type="checkbox" value="true" />
+        <input name="Visible" type="hidden" value="false" />*@
+    </div>
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+</form>
+

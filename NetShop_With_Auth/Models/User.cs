@@ -8,6 +8,8 @@ namespace NetShop_With_Auth.Models
 {
     public class User : IdentityUser
     {
-        //public override string Id { get; set; }
+        public string Name { get; set; }
+        public override string Email { get; set; }
+        public bool IsBlocked { get; set; }
     }
 }
